@@ -1,0 +1,73 @@
+import empanadas.*
+
+/*Tener en cuenta este escenario
+1. Galván arranca con deuda en 0 y dinero en 0. Su sueldo (que aún no cobró) es de 150000.
+2. Galván gasta 40000, `totalDeuda()` debe ser 40000, `totalDinero()` debe ser 0.
+3. Galván gasta otros 80000, `totalDeuda()` pasa a 120000, `totalDinero()` sigue en 0.
+4. Galván cobra, con los 150000 que recibe paga toda su deuda y le sobran 30000 pesos. Por lo tanto, `totalDeuda()` debe ser 0, y 
+`totalDinero()` debe ser 30000.
+5. Galván gasta 250000, cubre 30000 con el dinero que tiene, el resto es deuda. `totalDeuda()` queda en 220000, `totalDinero()` en 0.
+6. Galván cobra, tiene que dedicar los 150000 a pagar deudas, y no le alcanza. Ahora, `totalDeuda()` pasa a 70000, y `totalDinero()` a 0.
+ */
+ 
+test " Galván arranca con deuda en 0 y dinero en 0. Su sueldo (que aún no cobró) es de 150000" {
+	galvan.sueldo()
+	
+	assert.equals(150000, galvan.sueldo())
+
+}
+
+test "Galván gasta 40000, `totalDeuda()` debe ser 40000, `totalDinero()` debe ser 0 "{
+	
+	galvan.gastarCuanto(40000)
+	
+	assert.equals(40000, galvan.totalDeuda())
+	assert.equals(0 , galvan.totalDinero())
+	
+}
+
+test "Galván gasta otros 80000, `totalDeuda()` pasa a 120000, `totalDinero()` sigue en 0."{
+	
+	galvan.gastarCuanto(40000)
+	galvan.gastarCuanto(80000)
+	
+	assert.equals(120000, galvan.totalDeuda())
+	assert.equals(0, galvan.totalDinero())
+}
+
+
+test "Galván cobra, con los 150000 que recibe paga toda su deuda y le sobran 30000 pesos. Por lo tanto, `totalDeuda()` debe ser 0, y 
+`totalDinero()` debe ser 30000."{
+	
+	galvan.gastarCuanto(40000)
+	galvan.gastarCuanto(80000)
+	gimenez.pagarSueldoA(galvan)
+	
+	
+	assert.equals(0, galvan.totalDeuda())
+	assert.equals(30000, galvan.totalDinero())
+}
+
+
+test "Galván gasta 250000, cubre 30000 con el dinero que tiene, el resto es deuda. `totalDeuda()` queda en 220000, `totalDinero()` en 0."{
+	
+	galvan.gastarCuanto(40000)
+	galvan.gastarCuanto(80000)
+	gimenez.pagarSueldoA(galvan)
+	galvan.gastarCuanto(250000)
+	
+	assert.equals(220000, galvan.totalDeuda())
+	assert.equals(0, galvan.totalDinero())
+}
+
+test "Galván cobra, tiene que dedicar los 150000 a pagar deudas, y no le alcanza. Ahora, `totalDeuda()` pasa a 70000, y `totalDinero()` a 0."{
+	
+	galvan.gastarCuanto(40000)
+	galvan.gastarCuanto(80000)
+	gimenez.pagarSueldoA(galvan)
+	galvan.gastarCuanto(250000)
+	gimenez.pagarSueldoA(galvan)
+	
+	assert.equals(70000, galvan.totalDeuda())
+	assert.equals(0, galvan.totalDinero())
+}
